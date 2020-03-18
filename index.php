@@ -16,8 +16,10 @@ try {
 } catch (\PDOException $e) {
     throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
-echo "Conected to db" .' '. $pdo->query("show databases like 'netland'")->fetchColumn() . PHP_EOL;
-echo "with version" .' '. $pdo->query('select version()')->fetchColumn();
+
+$dataSeries = $pdo->query('SELECT * FROM netland.series')->fetchAll();
+$dataFilms = $pdo->query('SELECT * FROM netland.films')->fetchAll();
+
 ?>
 
 <DOCTYPE html>
@@ -25,5 +27,48 @@ echo "with version" .' '. $pdo->query('select version()')->fetchColumn();
 <title>Netfix 2.0</title>
 </head>
 <body>
+
+<h1>Welkom bij Netfix de enige echte fix streamer</h1>
+<h2>Series</h2>
+<table>
+    <tr>
+        <th>Titel</th>
+        <th>Rating</th>
+    </tr>
+    <tr>
+        <td>  
+            <?php foreach ($dataSeries as $row){
+                echo $row['title'] . "<br />\n";
+            } ?>
+        </td>
+        <td>
+            <?php foreach ($dataSeries as $row){
+                echo $row['rating'] . "<br />\n";
+            } ?>
+        </td>
+    </tr>
+</table>
+
+
+<h2>Films</h2>
+<table>
+    <tr>
+        <th>Titel</th>
+        <th>Duur</th>
+    </tr>
+    <tr>
+        <td>
+            <?php foreach ($dataFilms as $row){
+                echo $row['title'] . "<br />\n";
+            } ?>
+        </td>
+        <td>
+            <?php foreach ($dataFilms as $row){
+                echo $row['duur'] . "<br />\n";
+            } ?>
+        </td>
+    </tr>
+</table>
+
 </body>
 </html>
